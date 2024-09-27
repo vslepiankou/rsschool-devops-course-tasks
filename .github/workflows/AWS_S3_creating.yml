@@ -1,10 +1,14 @@
-name: List S3 Buckets
+name: List S3 Buckets with OIDC
 
 on:
   push:
     branches:
-      - task_1  # Trigger on push to main branch, change as per your default branch
-  workflow_dispatch:  # Allows manual triggering of the workflow
+      - main
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   list-buckets:
@@ -16,9 +20,8 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-central-1
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: us-east-1  # Modify as needed
 
       - name: List S3 Buckets
         run: aws s3api list-buckets --query 'Buckets[].Name' --output text
