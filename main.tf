@@ -1,21 +1,19 @@
 # Provider configuration
 provider "aws" {
-  region  = "eu-central-1"
-  profile = "default"
+  region = "eu-central-1"
 }
 
 terraform {
   backend "s3" {
-    bucket         = "rs-school-vital-slepiankou-1"
-    key            = "terraform/state"
-    region         = "eu-central-1"
-    profile        = "default"
+    bucket  = "rs-school-vital-slepiankou-1"
+    key     = "terraform/state"
+    region  = "eu-central-1"
   }
 }
 
 # Resource definition for the S3 bucket
 resource "aws_s3_bucket" "my_bucket" {
-  bucket = "rs-school-vital-slepiankou-2"
+  bucket = "rs-school-vital-slepiankou-3"
 
   tags = {
     Name        = "Source"
