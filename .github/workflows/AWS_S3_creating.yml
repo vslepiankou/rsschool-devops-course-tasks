@@ -76,6 +76,10 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Terraform Init
+        run: |
+          terraform init -reconfigure
+
       - name: Terraform Apply
         run: |
           terraform apply -auto-approve
