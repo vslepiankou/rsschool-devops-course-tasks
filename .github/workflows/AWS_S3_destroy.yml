@@ -1,0 +1,39 @@
+name: Terraform Destroy
+
+on:
+  workflow_dispatch:  # This allows the workflow to be manually triggered
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: us-east-1  # Ensure this matches your Terraform configuration
+
+jobs:
+  terraform-destroy:
+    runs-on: ubuntu-latest
+    environment: production  # You can specify the environment for additional safety measures
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: '1.9.0'  # Specify the Terraform version
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Terraform Init
+        run: |
+          terraform init -reconfigure
+
+      - name: Terraform Destroy
+        run: |
+          terraform destroy -auto-approve
