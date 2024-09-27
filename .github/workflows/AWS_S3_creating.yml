@@ -12,6 +12,7 @@ permissions:
 
 env:
   AWS_REGION: us-east-1  # Modify as needed
+  TF_ROOT: './terraform'  # Adjust path according to your Terraform files location
 
 jobs:
   terraform-check:
@@ -25,8 +26,9 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: '1.6.0'  # Specify the Terraform version
+          terraform_version: '1.0.0'  # Specify the Terraform version
 
       - name: Terraform Format
         run: |
+          cd ${{ env.TF_ROOT }}
           terraform fmt -check
