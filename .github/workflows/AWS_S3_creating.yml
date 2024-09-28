@@ -10,6 +10,9 @@ permissions:
   id-token: write  # Allow workflow to write ID tokens
   contents: read  # Allow workflow to read repository contents
 
+env:
+  AWS_REGION: eu-central-1  # Set AWS region environment variable
+
 jobs:
   terraform-check:
     name: Terraform Format Check  # Name this job as 'Terraform Format Check'
@@ -44,7 +47,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4  # Configure AWS credentials
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}  # Use AWS role ARN from secrets
-          aws-region: eu-central-1
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Terraform Init
         run: |
@@ -70,7 +73,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4  # Configure AWS credentials
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}  # Use AWS role ARN from secrets
-          aws-region: eu-central-1
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Terraform Init
         run: |
