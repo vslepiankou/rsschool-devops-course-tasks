@@ -1,85 +1,84 @@
-name: Terraform S3 creating
+name: Terraform S3 creating  # Name of the GitHub Actions workflow
 
 on:
   push:
     branches:
-      - task_1
-  workflow_dispatch:  # This allows the workflow to be manually triggered
+      - task_1  # Trigger workflow on push to 'task_1' branch
+  workflow_dispatch:  # Allow manual triggering of the workflow
 
 permissions:
-  id-token: write
-  contents: read
+  id-token: write  # Allow workflow to write ID tokens
+  contents: read  # Allow workflow to read repository contents
 
 env:
-  AWS_REGION: us-east-1  # Ensure this matches your Terraform configuration
+  AWS_REGION: eu-central-1  # Set AWS region environment variable
 
 jobs:
   terraform-check:
-    name: Terraform Format Check
-    runs-on: ubuntu-latest
+    name: Terraform Format Check  # Name this job as 'Terraform Format Check'
+    runs-on: ubuntu-latest  # Run this job on the latest Ubuntu runner
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2  # Check out the repository code
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
+        uses: hashicorp/setup-terraform@v1  # Set up Terraform with a specific version
         with:
           terraform_version: '1.9.0'  # Specify the Terraform version
 
       - name: Terraform Format
         run: |
-          terraform fmt -recursive
+          terraform fmt -recursive  # Run Terraform format recursively
 
   terraform-plan:
-    name: Terraform Plan
-    needs: terraform-check
-    runs-on: ubuntu-latest
+    name: Terraform Plan  # Name this job as 'Terraform Plan'
+    needs: terraform-check  # This job needs 'terraform-check' to run first
+    runs-on: ubuntu-latest  # Run this job on the latest Ubuntu runner
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2  # Check out the repository code
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
+        uses: hashicorp/setup-terraform@v1  # Set up Terraform
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v1  # Configure AWS credentials
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}  # Use AWS role ARN from secrets
+          aws-region: ${{ env.AWS_REGION }}  # Set AWS region from environment variable
 
       - name: Terraform Init
         run: |
-          terraform init -reconfigure
+          terraform init -reconfigure  # Initialize and reconfigure Terraform
 
       - name: Terraform Plan
         run: |
-          terraform plan
+          terraform plan  # Generate Terraform plan
 
   terraform-apply:
-    name: Terraform Apply
-    needs: terraform-plan
-    if: github.ref == 'refs/heads/task_1' && github.event_name == 'push'
-    runs-on: ubuntu-latest
+    name: Terraform Apply  # Name this job as 'Terraform Apply'
+    needs: terraform-plan  # This job needs 'terraform-plan' to run first
+    runs-on: ubuntu-latest  # Run this job on the latest Ubuntu runner
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2  # Check out the repository code
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
+        uses: hashicorp/setup-terraform@v1  # Set up Terraform
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v1  # Configure AWS credentials
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}  # Use AWS role ARN from secrets
+          aws-region: ${{ env.AWS_REGION }}  # Set AWS region from environment variable
 
       - name: Terraform Init
         run: |
-          terraform init -reconfigure
+          terraform init -reconfigure  # Initialize and reconfigure Terraform
 
       - name: Terraform Apply
         run: |
-          terraform apply -auto-approve
+          terraform apply -auto-approve  # Apply Terraform changes automatically without approval
