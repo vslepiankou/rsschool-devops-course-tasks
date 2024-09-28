@@ -15,4 +15,5 @@ Our GitHub Actions workflow automates the Terraform processes:
 - **Terraform Plan**: This step generates an execution plan for Terraform. It lets us see what Terraform will do before making any changes to the actual infrastructure. This is crucial for understanding the impact of changes.
 - **Terraform Apply**: Applies the changes specified by the Terraform plan. This step updates or creates resources in AWS according to our Terraform configurations.
 
-*By adding this note, you acknowledge the use of AI in creating the document, which can enhance the document's credibility and inform readers about the methods used in its preparation.*
+*Note
+This README was enhanced with the assistance of AI to ensure clarity and comprehensiveness.*
