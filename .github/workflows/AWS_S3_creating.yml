@@ -10,9 +10,6 @@ permissions:
   id-token: write  # Allow workflow to write ID tokens
   contents: read  # Allow workflow to read repository contents
 
-env:
-  AWS_REGION: eu-central-1  # Set AWS region environment variable
-
 jobs:
   terraform-check:
     name: Terraform Format Check  # Name this job as 'Terraform Format Check'
@@ -21,6 +18,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4  # Check out the repository code
+
+      - name: Load Environment Variables
+        uses: falti/dotenv-action@v2
+        with:
+          path: variables.env
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3  # Set up Terraform with a specific version
@@ -39,6 +41,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4  # Check out the repository code
+
+      - name: Load Environment Variables
+        uses: falti/dotenv-action@v2
+        with:
+          path: variables.env
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3  # Set up Terraform
@@ -65,6 +72,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4  # Check out the repository code
+
+      - name: Load Environment Variables
+        uses: falti/dotenv-action@v2
+        with:
+          path: variables.env
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3  # Set up Terraform
