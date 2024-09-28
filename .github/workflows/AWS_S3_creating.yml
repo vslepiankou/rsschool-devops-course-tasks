@@ -1,6 +1,9 @@
 name: Terraform S3 creating
 
 on:
+  push:
+    branches:
+      - task_1
   workflow_dispatch:  # This allows the workflow to be manually triggered
 
 permissions:
