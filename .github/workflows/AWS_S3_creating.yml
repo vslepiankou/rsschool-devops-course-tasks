@@ -20,10 +20,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2  # Check out the repository code
+        uses: actions/checkout@v4  # Check out the repository code
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1  # Set up Terraform with a specific version
+        uses: hashicorp/setup-terraform@v3  # Set up Terraform with a specific version
         with:
           terraform_version: '1.9.0'  # Specify the Terraform version
 
@@ -38,10 +38,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2  # Check out the repository code
+        uses: actions/checkout@v4  # Check out the repository code
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1  # Set up Terraform
+        uses: hashicorp/setup-terraform@v3  # Set up Terraform
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1  # Configure AWS credentials
@@ -64,10 +64,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2  # Check out the repository code
+        uses: actions/checkout@v4  # Check out the repository code
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1  # Set up Terraform
+        uses: hashicorp/setup-terraform@v3  # Set up Terraform
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1  # Configure AWS credentials
