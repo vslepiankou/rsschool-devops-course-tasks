@@ -19,11 +19,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4  # Check out the repository code
 
-      - name: Load Environment Variables
-        uses: falti/dotenv-action@v1
-        with:
-          path: variables.env
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3  # Set up Terraform with a specific version
         with:
@@ -42,11 +37,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4  # Check out the repository code
 
-      - name: Load Environment Variables
-        uses: falti/dotenv-action@v1
-        with:
-          path: variables.env
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3  # Set up Terraform
 
@@ -54,7 +44,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4  # Configure AWS credentials
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}  # Use AWS role ARN from secrets
-          aws-region: ${{ env.AWS_REGION }}  # Set AWS region from environment variable
+          aws-region: eu-central-1
 
       - name: Terraform Init
         run: |
@@ -73,11 +63,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4  # Check out the repository code
 
-      - name: Load Environment Variables
-        uses: falti/dotenv-action@v1
-        with:
-          path: variables.env
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3  # Set up Terraform
 
@@ -85,7 +70,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4  # Configure AWS credentials
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}  # Use AWS role ARN from secrets
-          aws-region: ${{ env.AWS_REGION }}  # Set AWS region from environment variable
+          aws-region: eu-central-1
 
       - name: Terraform Init
         run: |
