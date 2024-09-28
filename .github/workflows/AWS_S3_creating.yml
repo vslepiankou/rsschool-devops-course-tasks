@@ -1,4 +1,4 @@
-name: Terraform CI/CD
+name: Terraform S3 creating
 
 on:
   workflow_dispatch:  # This allows the workflow to be manually triggered
