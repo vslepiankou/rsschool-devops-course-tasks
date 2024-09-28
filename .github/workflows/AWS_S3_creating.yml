@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v4  # Check out the repository code
 
       - name: Load Environment Variables
-        uses: falti/dotenv-action@v2
+        uses: falti/dotenv-action@v1
         with:
           path: variables.env
 
@@ -43,7 +43,7 @@ jobs:
         uses: actions/checkout@v4  # Check out the repository code
 
       - name: Load Environment Variables
-        uses: falti/dotenv-action@v2
+        uses: falti/dotenv-action@v1
         with:
           path: variables.env
 
@@ -74,7 +74,7 @@ jobs:
         uses: actions/checkout@v4  # Check out the repository code
 
       - name: Load Environment Variables
-        uses: falti/dotenv-action@v2
+        uses: falti/dotenv-action@v1
         with:
           path: variables.env
 
