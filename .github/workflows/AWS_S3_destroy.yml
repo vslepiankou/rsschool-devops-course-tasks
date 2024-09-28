@@ -7,9 +7,6 @@ permissions:
   id-token: write
   contents: read
 
-env:
-  AWS_REGION: us-east-1  # Ensure this matches your Terraform configuration
-
 jobs:
   terraform-destroy:
     runs-on: ubuntu-latest
@@ -28,7 +25,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: eu-central-1
 
       - name: Terraform Init
         run: |
