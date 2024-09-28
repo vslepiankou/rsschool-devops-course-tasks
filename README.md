@@ -2,7 +2,7 @@
 
 This project uses Terraform and GitHub Actions to automatically set up and manage AWS resources. This ensures that our deployments are consistent and handled automatically.
 
-### Terraform Configuration (`main.tf`)
+### Terraform Configuration
 
 Our Terraform setup includes:
 - **Backend Configuration**: We use an S3 bucket to store the Terraform state files remotely. This setup helps in managing the state files across different team members and prevents any conflicts that might arise from local state management.
