@@ -1,0 +1,44 @@
+name: Terraform Destroy
+
+# This section defines when the workflow should be triggered.
+# 'workflow_dispatch' allows this workflow to be manually triggered from the GitHub Actions UI.
+on:
+  workflow_dispatch:
+
+# Permissions settings for the GitHub token used by actions in this workflow.
+permissions:
+  id-token: write  # Allows the workflow to write a GitHub OIDC ID token.
+  contents: read   # Allows the workflow to read the repository content.
+
+# Environment variables that are available to all jobs and steps in this workflow.
+env:
+  AWS_REGION: eu-central-1  # Set AWS region environment variable which is used in AWS actions.
+
+# Defines the jobs that will be executed by this workflow.
+jobs:
+  terraform-destroy:
+    runs-on: ubuntu-latest  # Specifies the type of runner that the job will execute on.
+    environment: production  # Specifies the environment name. Useful for protecting sensitive environments.
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4  # This action checks out your repository under $GITHUB_WORKSPACE, so your workflow can access it.
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3  # This action sets up Terraform CLI in your workflow.
+        with:
+          terraform_version: '1.9.0'  # Specifies the version of Terraform to use.
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4  # This action configures AWS credentials.
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}  # Specifies the AWS role ARN (from secrets) to assume.
+          aws-region: ${{ env.AWS_REGION }}  # Sets the AWS region for the AWS CLI.
+
+      - name: Terraform Init
+        run: |
+          terraform init -reconfigure -backend-config="region=${{ env.AWS_REGION }}"  # Initializes Terraform, and reconfigures the backend with new settings if they exist.
+
+      - name: Terraform Destroy
+        run: |
+          terraform destroy -auto-approve  # Executes the 'terraform destroy' command to tear down the infrastructure managed by Terraform, without requiring interactive approval.
