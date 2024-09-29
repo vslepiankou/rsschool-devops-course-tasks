@@ -37,7 +37,7 @@ jobs:
 
       - name: Terraform Init
         run: |
-          terraform init -reconfigure  # Initializes Terraform, and reconfigures the backend with new settings if they exist.
+          terraform init -reconfigure -backend-config="region=${{ env.AWS_REGION }}"  # Initializes Terraform, and reconfigures the backend with new settings if they exist.
 
       - name: Terraform Destroy
         run: |
