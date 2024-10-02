@@ -51,7 +51,7 @@ jobs:
 
       - name: Terraform Init
         run: |
-          terraform init -reconfigure -backend-config="region=${{ env.AWS_REGION }}"  # Initialize and reconfigure Terraform
+          terraform init -reconfigure # Initialize and reconfigure Terraform
 
       - name: Terraform Plan
         run: |
@@ -77,7 +77,7 @@ jobs:
 
       - name: Terraform Init
         run: |
-          terraform init -reconfigure -backend-config="region=${{ env.AWS_REGION }}"  # Initialize and reconfigure Terraform
+          terraform init -reconfigure # Initialize and reconfigure Terraform
 
       - name: Terraform Apply
         run: |
