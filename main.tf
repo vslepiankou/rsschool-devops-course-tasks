@@ -8,7 +8,6 @@ terraform {
     bucket         = "rs-school-vital-slepiankou-1"
     key            = "terraform/state"
     region         = "eu-central-1"
-    profile        = "default"
   }
 }
 
