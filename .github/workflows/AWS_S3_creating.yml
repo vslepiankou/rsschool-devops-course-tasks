@@ -3,7 +3,7 @@ name: Terraform S3 creating  # Name of the GitHub Actions workflow
 on:
   push:
     branches:
-      - task_1  # Trigger workflow on push to 'task_1' branch
+      - task_2  # Trigger workflow on push to 'task_2' branch
   workflow_dispatch:  # Allow manual triggering of the workflow
 
 permissions:
