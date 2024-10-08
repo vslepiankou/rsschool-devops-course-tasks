@@ -111,3 +111,102 @@ resource "aws_route_table_association" "private_2" {
   subnet_id = aws_subnet.private_subnet_2.id
   route_table_id = aws_default_route_table.default_private_rt.id
 }
+
+resource "aws_security_group" "bastion_sg" {
+  name        = "bastion_sg"
+  description = "Allow SSH from specific IPs for bastion host"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "Bastion Security Group"
+  }
+}
+
+resource "aws_security_group" "general_ec2_sg" {
+  name        = "general_ec2_sg"
+  description = "Allow SSH and ICMP within VPC"
+  vpc_id      = aws_vpc.main.id
+
+  # Allow SSH within the VPC
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.0.0/16"]  # Adjust to match your VPC CIDR
+  }
+
+  # Allow ICMP within the VPC
+  ingress {
+    from_port   = -1
+    to_port     = -1
+    protocol    = "icmp"
+    cidr_blocks = ["10.0.0.0/16"]  # Adjust to match your VPC CIDR
+  }
+
+  # Allow all outbound traffic
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "General EC2 Security Group"
+  }
+}
+
+resource "aws_instance" "bastion_host" {
+  ami                    = "ami-0592c673f0b1e7665"
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.public_subnet_1.id
+  key_name               = "ssh"
+  vpc_security_group_ids = [aws_security_group.bastion_sg.id, aws_security_group.general_ec2_sg.id]
+
+  tags = {
+    Name = "Bastion Host"
+  }
+}
+
+resource "aws_instance" "ec2_public_subnet_2" {
+  ami                    = "ami-0592c673f0b1e7665"
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.public_subnet_2.id
+  vpc_security_group_ids = [aws_security_group.general_ec2_sg.id]
+  key_name               = "ssh"
+
+  tags = {
+    Name = "EC2 in Public Subnet 2"
+  }
+}
+
+resource "aws_instance" "ec2_private_subnet_1" {
+  ami                    = "ami-0592c673f0b1e7665"
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.private_subnet_1.id
+  vpc_security_group_ids = [aws_security_group.general_ec2_sg.id]
+  key_name               = "ssh"
+
+  tags = {
+    Name = "EC2 in Private Subnet 1"
+  }
+}
+
+resource "aws_instance" "ec2_private_subnet_2" {
+  ami                    = "ami-0592c673f0b1e7665"
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.private_subnet_2.id
+  vpc_security_group_ids = [aws_security_group.general_ec2_sg.id]
+  key_name               = "ssh"
+
+  tags = {
+    Name = "EC2 in Private Subnet 2"
+  }
+}
